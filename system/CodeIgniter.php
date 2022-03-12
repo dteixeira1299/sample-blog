@@ -481,7 +481,7 @@ class CodeIgniter
     {
         // Make sure ENVIRONMENT isn't already set by other means.
         if (! defined('ENVIRONMENT')) {
-            define('ENVIRONMENT', $_SERVER['CI_ENVIRONMENT'] ?? 'production');
+            define('ENVIRONMENT', ENVIRONMENT ?? 'production');
         }
     }
 

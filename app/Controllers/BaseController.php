@@ -2,11 +2,13 @@
 
 namespace App\Controllers;
 
+use App\Libraries\Language;
 use CodeIgniter\Controller;
 use CodeIgniter\HTTP\CLIRequest;
 use CodeIgniter\HTTP\IncomingRequest;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
+use Kint\Zval\Value;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -35,7 +37,9 @@ class BaseController extends Controller
      *
      * @var array
      */
-    protected $helpers = [];
+    protected $helpers = ['general'];
+
+    protected $LNG;
 
     /**
      * Constructor.
@@ -48,5 +52,10 @@ class BaseController extends Controller
         // Preload any models, libraries, etc, here.
 
         // E.g.: $this->session = \Config\Services::session();
+
+        // language
+        $this->LNG = new Language();
+
     }
+
 }
