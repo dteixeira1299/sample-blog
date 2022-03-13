@@ -1,7 +1,14 @@
 <?php
 
 // ============================================================================
-// General helper functions
+function check_session()
+{
+    // check if there is a user in the session
+    return session()->has('user');
+}
+
+
+
 // ============================================================================
 function printData($data, $die = true)
 {

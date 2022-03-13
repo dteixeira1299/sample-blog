@@ -17,7 +17,7 @@
             <?php else : ?>
                 <a href="<?= site_url('main/login_teste') ?>" class="link-app"><?= $LNG->TXT('login') ?></a>
                 <span class="mx-2 opacity-50">|</span>
-                <a href="<?= site_url('main/login_teste') ?>" class="link-app"><?= $LNG->TXT('sign_up') ?></a>
+                <a href="<?= site_url('main/new_user') ?>" class="link-app"><?= $LNG->TXT('sign_up') ?></a>
 
             <?php endif; ?>
 
