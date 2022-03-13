@@ -1,3 +1,4 @@
 .env
-/writable
-/tests
+writable/
+tests/
+vendor/

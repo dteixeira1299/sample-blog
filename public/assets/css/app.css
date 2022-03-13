@@ -1,0 +1,30 @@
+/* app.css */
+* {
+    /* box-shadow: inset 0px 0px 2px rgb(255, 255, 0); */
+}
+
+/* buttons */
+.btn-primary {
+    padding: .75rem 1rem !important;
+}
+
+/* links */
+.link-app {
+    text-decoration: none;
+    color: rgb(0, 195, 255);
+}
+
+.link-app:hover{
+    text-decoration: none;
+    color: rgb(253, 255, 130);
+}
+
+/* opacity */
+.opacity-25 { opacity: 0.25;}
+.opacity-50 { opacity: 0.50;}
+.opacity-75 { opacity: 0.75;}
+
+/* main bar */
+.main-bar {
+    background-color: #34393f;
+}

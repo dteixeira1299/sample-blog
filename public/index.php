@@ -1,7 +1,7 @@
 <?php
 
 // load config file
-include '../config/config.php';
+require_once(dirname(__FILE__) . '/../config/config.php');
 
 // Path to the front controller (this file)
 define('FCPATH', __DIR__ . DIRECTORY_SEPARATOR);

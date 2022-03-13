@@ -7,22 +7,39 @@ class Language
 
     protected $selected_language = null;
     protected $translations = null;
+    protected $available_languages = ['pt', 'en'];
 
+
+    // ========================================================================
     public function __construct()
     {
-        $language = 'pt';
 
-        helper('cookie');
-
-        if(has_cookie('blog_lang')) {
-            
-            $language = get_cookie('blog_lang');
-            $this->selected_language = $language;
-
+        // define the language
+        if(isset($_COOKIE['blog_lang'])) {
+            $language = $_COOKIE['blog_lang'];
         } else {
-            
-            set_cookie('blog_lang', $language, (86400*365));
+            $language = 'pt';
+        }
 
+        //check if the language is available
+        if(!in_array($language, $this->available_languages)){
+            $language = 'pt';
+        }
+
+        $this->selected_language = $language;
+
+        //load the translations
+        $this->translations = require_once(dirname(__FILE__) . '/../../languages/' . $this->selected_language . '.php');
+
+    }
+
+    // ========================================================================
+    public function TXT($key)
+    {
+        if(!key_exists($key, $this->translations)){
+            return '(...)';
+        } else {
+            return $this->translations[$key];
         }
     }
 

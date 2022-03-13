@@ -12,6 +12,8 @@
         "ext-mbstring": "*",
         "kint-php/kint": "^4.0",
         "laminas/laminas-escaper": "^2.9",
+        "monolog/monolog": "^2.3",
+        "phpmailer/phpmailer": "^6.6",
         "psr/log": "^1.1"
     },
     "require-dev": {
