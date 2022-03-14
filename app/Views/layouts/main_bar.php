@@ -9,6 +9,10 @@
 
         <div class="col-6 p-2 text-end align-self-center">
 
+            <a href="<?= site_url('main') ?>" class="link-app"><?= $LNG->TXT('home') ?></a>
+
+            <span class="mx-2 opacity-50">|</span>
+
             <?php if (session()->has('user')) : ?>
                 <i class="far fa-user me-2"></i>
                 <a href="#" class="link-app"><?= session('user')['username'] ?></a>

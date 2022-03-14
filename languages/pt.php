@@ -14,6 +14,7 @@ return [
     'name'                     => 'Nome',
     'email'                    => 'Email',
     'password'                 => 'Password',
+    'home'                     => 'Início',
 
     // ----------------------------------------------------
     // new user account
@@ -25,6 +26,14 @@ return [
     'new_user_already_have_account'     => 'Já tenho conta.',
     'new_user_recover_password'         => 'Recuperar password.',
     'new_user_disclaimer'               => 'A sua conta só estará disponível após confirmação do email.',
+
+    // validation errors
+    'error_field_required'                 => 'O campo {field} é de preenchimento obrigatório.',
+    'error_valid_email'                    => 'O campo {field} tem que ser um email válido.',
+    'error_field_min_length'               => 'O campo {field} deve ter, no mínimo, {param} caracteres.',
+    'error_field_max_length'               => 'O campo {field} deve ter, no máximo, {param} caracteres.',
+    'error_password_regex'                 => 'O campo {field} deve ter, no mínimo, uma maiúscula, uma minúscula, um número e um símbolo.',
+    'error_repeat_password_not_matching'   => 'As passwords têm que ser iguais.',
 
 
 ];

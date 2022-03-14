@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 
+use App\Models\Users_model;
+
 class Main extends BaseController
 {
 
@@ -44,7 +46,10 @@ class Main extends BaseController
             return redirect()->to('main');
         }
 
-        helper('form');
+        //check if there are form validation errors
+        if(session()->has('validation_errors')){
+            $data['validation_errors'] = session()->getFlashdata('validation_errors');
+        }
 
         $data['LNG'] = $this->LNG;
 
@@ -68,54 +73,79 @@ class Main extends BaseController
         // form validation
         $validation = $this->validate([
             'text_username' => [
+                'label' => $this->LNG->TXT('name'),
                 'rules' => 'required|min_length[10]|max_length[20]',
                 'errors' => [
-                    'required' => 'O campo é de preenchimento obrigatório.',
-                    'min_length' => 'O nome deve ter entre 10 e 20 caracteres.',
-                    'max_length' => 'O nome deve ter entre 10 e 20 caracteres.',
+                    'required' => $this->LNG->TXT('error_field_required'),
+                    'min_length' => $this->LNG->TXT('error_field_min_length'),
+                    'max_length' => $this->LNG->TXT('error_field_max_length'),
                 ]
             ],
             'text_email' => [
+                'label' => $this->LNG->TXT('email'),
                 'rules' => 'required|valid_email|min_length[10]|max_length[50]',
                 'errors' => [
-                    'required' => 'O campo é de preenchimento obrigatório.',
-                    'valid_email' => 'O campo tem que ser um email válido.',
-                    'min_length' => 'O email deve ter entre 10 e 50 caracteres.',
-                    'max_length' => 'O email deve ter entre 10 e 50 caracteres.',
+                    'required' => $this->LNG->TXT('error_field_required'),
+                    'valid_email' => $this->LNG->TXT('error_valid_email'),
+                    'min_length' => $this->LNG->TXT('error_field_min_length'),
+                    'max_length' => $this->LNG->TXT('error_field_max_length'),
                 ]
             ],
             'text_password' => [
-                'rules' => 'required|min_length[6]|max_length[16]',
+                'label' => $this->LNG->TXT('password'),
+                'rules' => 'required|min_length[6]|max_length[16]|regex_match[/(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*\W)/]',
                 'errors' => [
-                    'required' => 'O campo é de preenchimento obrigatório.',
-                    'min_length' => 'A password deve ter entre 6 e 16 caracteres.',
-                    'max_length' => 'A password deve ter entre 6 e 16 caracteres.',
+                    'required' => $this->LNG->TXT('error_field_required'),
+                    'min_length' => $this->LNG->TXT('error_field_min_length'),
+                    'max_length' => $this->LNG->TXT('error_field_max_length'),
+                    'regex_match' => $this->LNG->TXT('error_password_regex'),
                 ]
             ],
             'text_repeat_password' => [
-                'rules' => 'required|min_length[6]|max_length[16]',
+                'label' => $this->LNG->TXT('new_user_repeat_password'),
+                'rules' => 'required|min_length[6]|max_length[16]|regex_match[/(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*\W)/]|matches[text_password]',
                 'errors' => [
-                    'required' => 'O campo é de preenchimento obrigatório.',
-                    'min_length' => 'A repetição da password deve ter entre 6 e 16 caracteres.',
-                    'max_length' => 'A repetição da password deve ter entre 6 e 16 caracteres.',
+                    'required' => $this->LNG->TXT('error_field_required'),
+                    'min_length' => $this->LNG->TXT('error_field_min_length'),
+                    'max_length' => $this->LNG->TXT('error_field_max_length'),
+                    'regex_match' => $this->LNG->TXT('error_password_regex'),
+                    'matches' => $this->LNG->TXT('error_repeat_password_not_matching'),
                 ]
             ],
         ]);
 
         if (!$validation) {
-            printData($this->validator->getErrors());
             return redirect()->back()->withInput()->with('validation_errors', $this->validator->getErrors());
         }
 
-        printData('ok');
-
+        // -------------------------
         // get post data
         $username = $this->request->getPost('text_username');
         $email = $this->request->getPost('text_email');
         $password = $this->request->getPost('text_password');
-        $repeat_password = $this->request->getPost('text_repeat_password');
+
+        // tries to create the new user account
+        $users_model = new Users_model();
+        $results = $users_model->create_new_user_account($username, $email, $password);
+
+        // check result
+        if($results['status'] == 'ERROR'){
+            die('ups');
+        } else {
+            printData($results);
+        }
+
+
     }
 
+    // ============================================================================
+    public function user_testes()
+    {
+        $users_model = new Users_model();
+        $users = $users_model->get_all_users();
+
+        printData($users);
+    }
 
 
 
