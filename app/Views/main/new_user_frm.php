@@ -27,13 +27,13 @@
                 <!-- password -->
                 <div class="mb-3">
                     <label for="text_password" class="form-label"><?= $LNG->TXT('password') ?></label>
-                    <input type="password" name="text_password" id="text_password" class="form-control" require minlength="6" maxlength="16" placeholder="<?= $LNG->TXT('password') ?>">
+                    <input type="password" name="text_password" id="text_password" class="form-control" require minlength="6" maxlength="16" pattern="(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*\W)]" placeholder="<?= $LNG->TXT('password') ?>">
                 </div>
 
                 <!-- repeat password -->
                 <div class="mb-3">
                     <label for="text_repeat_password" class="form-label"><?= $LNG->TXT('new_user_repeat_password') ?></label>
-                    <input type="password" name="text_repeat_password" id="text_repeat_password" class="form-control" require minlength="6" maxlength="16" placeholder="<?= $LNG->TXT('new_user_repeat_password') ?>">
+                    <input type="password" name="text_repeat_password" id="text_repeat_password" class="form-control" require minlength="6" maxlength="16" pattern="(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*\W)]" placeholder="<?= $LNG->TXT('new_user_repeat_password') ?>">
                 </div>
 
                 <div class="row">
@@ -54,6 +54,7 @@
 
                 <?= form_close() ?>
 
+                <!-- validation errors -->
                 <?php if (!empty($validation_errors)) : ?>
                     <div class="alert alert-danger p-2">
                         <small>
@@ -63,6 +64,25 @@
                         </small>
                     </div>
                 <?php endif; ?>
+                
+                <!-- login errors -->
+                <?php if (!empty($login_error)) : ?>
+                    <div class="alert alert-danger p-2">
+                        <small>
+                            <i class="far fa-times-circle me-2"></i><?= $login_error['error_message'] ?><br>
+                        </small>
+                    </div>
+
+                    <!-- email is not confirmed -->
+                    <?php if(!empty($login_error['error_number']) && $login_error['error_number'] == 'unconfirmed email'): ?>
+                        <div class="text-center">
+                            <a href="<?= site_url('main/send_email_confirmation/' . aes_encrypt($login_error['id_user'])) ?>" class="btn btn-primary"><?= $LNG->TXT('new_account_send_verification_email') ?></a>
+                        </div>
+                    <?php endif; ?>
+
+
+                <?php endif; ?>
+
 
             </div>
 

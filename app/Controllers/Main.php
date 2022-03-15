@@ -51,6 +51,11 @@ class Main extends BaseController
             $data['validation_errors'] = session()->getFlashdata('validation_errors');
         }
 
+        //check if there are login error
+        if(session()->has('login_error')){
+            $data['login_error'] = session()->getFlashdata('login_error');
+        }
+
         $data['LNG'] = $this->LNG;
 
         return view('main/new_user_frm', $data);
@@ -121,7 +126,7 @@ class Main extends BaseController
         // -------------------------
         // get post data
         $username = $this->request->getPost('text_username');
-        $email = $this->request->getPost('text_email');
+        $email = strtolower($this->request->getPost('text_email'));
         $password = $this->request->getPost('text_password');
 
         // tries to create the new user account
@@ -130,13 +135,159 @@ class Main extends BaseController
 
         // check result
         if($results['status'] == 'ERROR'){
-            die('ups');
-        } else {
-            printData($results);
+            $error_message = $results['message'];
+
+            //check what was the error
+            if($error_message == 'Email is not verified.'){
+
+                // the email is not verified
+                return redirect()->back()->withInput()->with('login_error', [
+                    'error_message' => $this->LNG->TXT('new_account_error_1'),
+                    'error_number' => 'unconfirmed email',
+                    'id_user' => $results['data']->id_user,
+                ]);
+
+            } else if($error_message == 'Account is deleted.') {
+
+                // the account is deleted
+                return redirect()->back()->withInput()->with('login_error', [
+                    'error_message' => $this->LNG->TXT('new_account_error_2'),
+                ]);
+
+            } else if($error_message == 'Email already an active account.') {
+
+                // the account is active
+                return redirect()->back()->withInput()->with('login_error', [
+                    'error_message' => $this->LNG->TXT('new_account_error_3'),
+                ]);
+
+            }
         }
+
+        //send the email to the new user to confirm the email address
+        $data = [
+            'email_address' => $email,
+            'url' => site_url('main/verify_email/' . $results['user_code']),
+        ];
+        $this->send_email_to_verify_account($data);
+
+        //display final page informing the new user that an email was sent
+        $this->new_user_account_final_message($email);
 
 
     }
+
+    // ============================================================================
+    private function new_user_account_final_message($email)
+    {
+
+        //display new user account final message
+        $data['LNG'] = $this->LNG;
+        $data['email'] = $email;
+        echo view('main/new_user_final_message', $data);
+
+    }
+
+    // ============================================================================
+    private function send_email_to_verify_account($data)
+    {
+        //TMP TMP TMP TMP TMP TMP TMP TMP TMP TMP TMP TMP
+        mail($data['email_address'],'Confirmar o email.','Clique no link seguinte para verificar o seu email: ' . $data['url']);
+
+
+    }
+
+    // ============================================================================
+    public function send_email_confirmation($enc_id_user = '') 
+    {
+        // check session
+        if (check_session()) {
+            return redirect()->to('main');
+        }
+
+        //check if the id user is available
+        if(empty($enc_id_user) || aes_decrypt($enc_id_user) == -1 || empty(aes_decrypt($enc_id_user))) {
+            return redirect()->to('main');
+        }
+
+        //checks if the id_user is valid
+        $id_user = aes_decrypt($enc_id_user);
+        
+        //loads model
+        $users_model = new Users_model();
+        $results = $users_model->get_unconfirmed_email_user_data($id_user);
+
+        //checks if there was a error trying to get the users data
+        if($results['status'] == 'ERROR'){
+            return redirect()->to('main');
+        }
+
+
+        $data = [
+            'email_address' => $results['data']->email,
+            'url' => site_url('main/verify_email/' . $results['data']->user_code),
+        ];
+
+        //send email to virify account
+        $this->send_email_to_verify_account($data);
+
+        //display final page informing the new user that an email was sent
+        $this->new_user_account_final_message($data['email_address']);
+
+    }
+
+    // ============================================================================
+    // EMAIL VERIFICATION
+    // ============================================================================
+    public function verify_email($user_code = '')
+    {
+        // try to verify email
+
+        // check session
+        if (check_session()) {
+            return redirect()->to('main');
+        }
+
+        // check if the user_code is not empty
+        if (empty($user_code)){
+            return redirect()->to('main');
+        }
+
+        // check the user_code in the database
+        $users_model = new Users_model();
+        $result = $users_model->verify_email($user_code);
+        if($result['status'] == 'ERROR'){
+            return redirect()->to('main');
+        }
+        
+        //email was verified with success
+        $data['LNG'] = $this->LNG;
+        return view('main/new_account_email_verified.php', $data);
+        
+    }
+
+
+    // ============================================================================
+    // LOGIN
+    // ============================================================================
+    public function login()
+    {
+        die('login');
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     // ============================================================================
     public function user_testes()

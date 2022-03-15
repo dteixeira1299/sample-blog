@@ -27,6 +27,16 @@ return [
     'new_user_recover_password'         => 'Recover password.',
     'new_user_disclaimer'               => 'Your account will only be available after email confirmation.',
 
+    // new account errors
+    'new_account_error_1'               => 'The e-mail is not yet verified.',
+    'new_account_error_2'               => 'The account exists, but it is not active.',
+    'new_account_error_3'               => 'The account is already registered and active.',
+    'new_account_send_verification_email' => 'Resend the email for verification of your account.',
+
+    'new_account_final_message_title' => 'EMAIL VALIDATION',
+    'new_account_final_message_message' => 'Please check your mailbox. An email has been sent to <strong style="color: white;">^</strong> to validate your account.',
+    'new_account_email_verified' => 'Your account has been successfully validated.<br>Welcome to this platform.',
+
     // validation errors
     'error_field_required'                 => 'The {field} field is required.',
     'error_valid_email'                    => 'The {field} field must be a valid email address.',

@@ -12,3 +12,7 @@ define('MYSQL_PASSWORD',                '');
 define('MYSQL_DATABASE',                'sample_blog');
 define('MYSQL_AES_KEY',                 'BByGRd8qurxzMbN47rZF2C5UqX55vswk');
 
+// ssl encryption
+define('AES_KEY',                        'apn9PA96EAXCxuq2eHso2bgKtq8P2Dok');
+define('AES_IV',                         '7xJcK7gBOVmIwojL');
+
