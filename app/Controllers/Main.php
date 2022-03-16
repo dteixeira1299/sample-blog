@@ -125,8 +125,8 @@ class Main extends BaseController
 
         // -------------------------
         // get post data
-        $username = $this->request->getPost('text_username');
-        $email = strtolower($this->request->getPost('text_email'));
+        $username = trim($this->request->getPost('text_username'));
+        $email = trim(strtolower($this->request->getPost('text_email')));
         $password = $this->request->getPost('text_password');
 
         // tries to create the new user account

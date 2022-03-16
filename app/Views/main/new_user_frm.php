@@ -86,22 +86,8 @@
 
             </div>
 
-
-            <div class="mt-5">
-                <span class="link-app" onclick="preencher()">PREENCHER</span>
-            </div>
-
         </div>
     </div>
 </div>
-
-<script>
-    function preencher() {
-        document.querySelector("#text_username").value = "Diogo Teixeira";
-        document.querySelector("#text_email").value = "diogo.teixeira@gmail.com";
-        document.querySelector("#text_password").value = "Aa123456!";
-        document.querySelector("#text_repeat_password").value = "Aa123456!";
-    }
-</script>
 
 <?= $this->endSection() ?>
