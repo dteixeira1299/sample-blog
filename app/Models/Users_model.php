@@ -152,6 +152,55 @@ class Users_model extends Model
 
     }
 
+    public function check_login($email, $password)
+    {
+        //check if login is ok
+        $params = [
+            $email
+        ];
+
+        $db = db_connect();
+
+        $results = $db->query(
+            "SELECT " .
+            "id_user, " .
+            "AES_DECRYPT(username, UNHEX(SHA2('" . MYSQL_AES_KEY . "', 512))) username, " . 
+            "AES_DECRYPT(email, UNHEX(SHA2('" . MYSQL_AES_KEY . "', 512))) email, " . 
+            "psw, " . 
+            "profile, " . 
+            "user_code " . 
+            "FROM users " . 
+            "WHERE AES_ENCRYPT(?, UNHEX(SHA2('" . MYSQL_AES_KEY . "', 512))) = email " .
+            "AND deleted_at IS NULL " . 
+            "AND email_verified IS NOT NULL"
+        , $params)->getResultObject();
+
+        //check if there are results
+        if(count($results) != 1){
+            return [
+                'status' => 'ERROR',
+                'message' => 'Invalid login. User does not exists.',
+            ];
+        } 
+
+        //check if the password is ok
+        $tmp_user = $results[0];
+        if(!password_verify($password, $tmp_user->psw)){
+            return [
+                'status' => 'ERROR',
+                'message' => 'Invalid login. Wrong password.',
+            ];
+        }
+
+        //login is ok
+        return [
+            'status' => 'SUCCESS',
+            'message' => 'SUCCESS',
+            'data' => $tmp_user,
+        ];
+
+    }
+
     // ========================================================================
     public function get_all_users()
     {

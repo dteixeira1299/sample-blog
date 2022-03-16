@@ -14,6 +14,14 @@
 .btn-200 {min-width: 200px !important;}
 
 /* links */
+.link-logo {
+    text-decoration: none;
+    color: white;
+}
+.link-logo:hover {
+    color: white;
+}
+
 .link-app {
     text-decoration: none;
     color: rgb(0, 195, 255);
@@ -51,3 +59,24 @@
     box-shadow: 0px 0px 6px rgb(0, 0, 0, 0.5);
     border-radius: 10px;
 }
+
+/* login user */
+.login-wrapper {
+    background-color: #32383E;
+    padding: 40px;
+    border: #2b3036;
+    box-shadow: 0px 0px 6px rgb(0, 0, 0, 0.5);
+    border-radius: 10px;
+}
+
+/* home */
+.home-wrapper {
+    background-color: #32383E;
+    padding: 40px;
+    border: #2b3036;
+    box-shadow: 0px 0px 6px rgb(0, 0, 0, 0.5);
+    border-radius: 10px;
+}
+
+
+

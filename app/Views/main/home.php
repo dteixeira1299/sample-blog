@@ -5,17 +5,60 @@
 <div class="container">
     <div class="row my-5">
         <div class="col12 text-center">
-            <h3>Últimos Posts:</h3>
 
-            <div class="card p-3 my-1" style="width: 18rem;">
-                <img src="https://image.shutterstock.com/image-vector/new-blog-post-speech-bubble-260nw-1917351452.jpg" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title mt-4">Card title</h5>
-                    <p class="card-text mt-2">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                    <a href="#" class="btn btn-primary mt-2">Read more....</a>
+            <h1>HOME</h1>
+            <br><br><br>
+
+            <div class="home-wrapper">
+
+                <div class="row">
+                    <div class="col-sm-9 col-12">
+
+
+                        <!-- card1 -->
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Special title treatment</h5>
+                                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                                <a href="#" class="btn btn-primary">Go somewhere</a>
+                            </div>
+                        </div>
+                        <br>
+                        <!-- card2 -->
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Special title treatment</h5>
+                                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                                <a href="#" class="btn btn-primary">Go somewhere</a>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-sm-3 col-12">
+
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">About...</h5>
+                                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                                <a href="#" class="btn btn-primary">Go somewhere</a>
+                            </div>
+                        </div>
+
+                    </div>
+
+
                 </div>
+
+
+
+
+
+
+
+
             </div>
-            
+
         </div>
     </div>
 </div>

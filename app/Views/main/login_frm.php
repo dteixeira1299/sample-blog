@@ -6,17 +6,12 @@
     <div class="row my-5">
         <div class="col-lg-6 offset-lg-3 col-sm-8 offset-sm-2">
 
-            <div class="new-user-wrapper">
+            <div class="login-wrapper">
 
-                <p class="main-title"><?= $LNG->TXT('new_user_title') ?></p>
+                <p class="main-title"><?= $LNG->TXT('login_title') ?></p>
 
-                <?= form_open('main/new_user_submit') ?>
+                <?= form_open('main/login_submit') ?>
 
-                <!-- username -->
-                <div class="mb-3">
-                    <label for="text_username" class="form-label"><?= $LNG->TXT('name') ?></label>
-                    <input type="text" name="text_username" id="text_username" class="form-control" required minlength="10" maxlength="20" placeholder="<?= $LNG->TXT('name') ?>" value="<?= old('text_username') ?>">
-                </div>
 
                 <!-- email -->
                 <div class="mb-3">
@@ -30,27 +25,16 @@
                     <input type="password" name="text_password" id="text_password" class="form-control" required minlength="6" maxlength="16" placeholder="<?= $LNG->TXT('password') ?>">
                 </div>
 
-                <!-- repeat password -->
-                <div class="mb-3">
-                    <label for="text_repeat_password" class="form-label"><?= $LNG->TXT('new_user_repeat_password') ?></label>
-                    <input type="password" name="text_repeat_password" id="text_repeat_password" class="form-control" required minlength="6" maxlength="16" placeholder="<?= $LNG->TXT('new_user_repeat_password') ?>">
-                </div>
-
                 <div class="row">
                     <div class="col-sm-6 col-12">
-                        <a href="<?= base_url('main/login') ?>" class="link-app"><?= $LNG->TXT('new_user_already_have_account') ?></a><br>
+                        <a href="<?= base_url('main/new_user') ?>" class="link-app"><?= $LNG->TXT('sign_up') ?></a><br>
                         <a href="#" class="link-app"><?= $LNG->TXT('new_user_recover_password') ?></a>
                     </div>
                     <div class="col-sm-6 col-12 text-end">
-                        <input type="submit" value="<?= $LNG->TXT('new_user_create_account') ?>" class="btn btn-primary btn-150">
+                        <input type="submit" value="<?= $LNG->TXT('login') ?>" class="btn btn-primary btn-150">
                     </div>
                 </div>
-
                 <br>
-
-                <div class="mb-3 text-center">
-                    <?= $LNG->TXT('new_user_disclaimer') ?>
-                </div>
 
                 <?= form_close() ?>
 
@@ -64,22 +48,14 @@
                         </small>
                     </div>
                 <?php endif; ?>
-                
+
                 <!-- login errors -->
                 <?php if (!empty($login_error)) : ?>
                     <div class="alert alert-danger p-2">
                         <small>
-                            <i class="far fa-times-circle me-2"></i><?= $login_error['error_message'] ?><br>
+                            <i class="far fa-times-circle me-2"></i><?= $login_error ?><br>
                         </small>
                     </div>
-
-                    <!-- email is not confirmed -->
-                    <?php if(!empty($login_error['error_number']) && $login_error['error_number'] == 'unconfirmed email'): ?>
-                        <div class="text-center">
-                            <a href="<?= site_url('main/send_email_confirmation/' . aes_encrypt($login_error['id_user'])) ?>" class="btn btn-primary"><?= $LNG->TXT('new_account_send_verification_email') ?></a>
-                        </div>
-                    <?php endif; ?>
-
 
                 <?php endif; ?>
 

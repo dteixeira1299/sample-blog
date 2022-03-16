@@ -10,7 +10,7 @@ return [
     'cancel'                   => 'Cancel',
     'login'                    => 'Login',
     'logout'                   => 'Logout',
-    'sign_up'                  => 'Sign up',
+    'sign_up'                  => 'Create new account',
     'name'                     => 'Name',
     'email'                    => 'Email',
     'password'                 => 'Password',
@@ -23,9 +23,14 @@ return [
     'new_user_valid_email'              => 'Enter a valid email address',
     'new_user_repeat_password'          => 'Repeat password',
     'new_user_create_account'           => 'Create Account',
-    'new_user_already_have_account'     => 'I already have an account.',
-    'new_user_recover_password'         => 'Recover password.',
+    'new_user_already_have_account'     => 'I already have an account',
+    'new_user_recover_password'         => 'Recover password',
     'new_user_disclaimer'               => 'Your account will only be available after email confirmation.',
+    
+    // ----------------------------------------------------
+    // login
+    // ----------------------------------------------------
+    'login_title' => 'Login',
 
     // new account errors
     'new_account_error_1'               => 'The e-mail is not yet verified.',
@@ -36,6 +41,9 @@ return [
     'new_account_final_message_title' => 'EMAIL VALIDATION',
     'new_account_final_message_message' => 'Please check your mailbox. An email has been sent to <strong style="color: white;">^</strong> to validate your account.',
     'new_account_email_verified' => 'Your account has been successfully validated.<br>Welcome to this platform.',
+
+    //login error
+    'login_error_message' => 'Invalid username or password.',
 
     // validation errors
     'error_field_required'                 => 'The {field} field is required.',

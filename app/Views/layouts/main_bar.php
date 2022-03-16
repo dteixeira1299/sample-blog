@@ -1,10 +1,10 @@
-<div class="container-fluid main-bar">
+<div class="container-fluid main-bar fixed-top">
     <div class="row">
 
         <div class="col-6 p-2">
-            <div class="d-flex">
-                <h3 class="align-self-center"><?= APP_NAME ?></h3>
-            </div>
+            <a href="<?= site_url('main') ?>" class="link-logo">
+                <h3 class="align-self-center m-1"><?= APP_NAME ?></h3>
+            </a>
         </div>
 
         <div class="col-6 p-2 text-end align-self-center">
@@ -32,3 +32,5 @@
 
     </div>
 </div>
+<br>
+<br>
