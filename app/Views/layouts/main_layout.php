@@ -11,7 +11,9 @@
     <link rel="stylesheet" href="<?= base_url('assets/css/app.css') ?>">
     <!-- fontawesome -->
     <link rel="stylesheet" href="<?= base_url('assets/fontawesome/all.css') ?>">
-
+    <!-- trix -->
+    <link rel="stylesheet" href="<?= base_url('assets/css/trix.css') ?>">
+    <script src="<?= base_url('assets/js/trix.js') ?>"></script>
 </head>
 
 <body>

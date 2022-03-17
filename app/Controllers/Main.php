@@ -340,12 +340,52 @@ class Main extends BaseController
 
             return redirect()->back()->withInput()->with('login_error', $this->LNG->TXT('login_error_message'));
         }
+
+        session()->set('user', [
+            'id_user' => $results['data']->id_user,
+            'username' => $results['data']->username,
+            'email' => $results['data']->email,
+            'profile' => $results['data']->profile,
+        ]);
+
+        return redirect()->to('main');
         
     }
 
+    // ============================================================================
+    // LOGOUT
+    // ============================================================================
+    public function logout()
+    {
+        session()->remove('user');
+        return redirect()->to('main');
+    }
 
 
+    // ============================================================================
+    // NEW POST
+    // ============================================================================
+    public function new_post()
+    {
+        //display create post page
+        $data['LNG'] = $this->LNG;
+        return view('main/new_post_frm', $data);
+    }
 
+    public function new_post_submit()
+    {
+        // -------------------------
+        // get post data
+        $text_post_title = $this->request->getPost('text_post_title');
+        $text_post_message = $this->request->getPost('text_post_message');
+
+        $data = [
+            'title' => $text_post_title,
+            'message' => $text_post_message,
+        ];
+
+        printData($data);
+    }
 
 
 
@@ -387,25 +427,7 @@ class Main extends BaseController
 
 
 
-    // ============================================================================
-    // USER
-    // ============================================================================
-    public function login_teste()
-    {
-        // TMP
-        session()->set('user', [
-            'id_user' => 1,
-            'username' => 'Diogo Teixeira',
-            'email' => 'usuario@teste.com',
-        ]);
-    }
-
-    // ============================================================================
-    public function logout_teste()
-    {
-        session()->remove('user');
-        return redirect()->to('main');
-    }
+    
 
     // ============================================================================
     public function session()

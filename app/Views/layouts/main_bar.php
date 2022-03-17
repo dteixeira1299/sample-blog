@@ -17,7 +17,7 @@
                 <i class="far fa-user me-2"></i>
                 <a href="#" class="link-app"><?= session('user')['username'] ?></a>
                 <span class="mx-2 opacity-50">|</span>
-                <a href="<?= site_url('main/logout_teste') ?>" class="link-app"><?= $LNG->TXT('logout') ?></a>
+                <a href="<?= site_url('main/logout') ?>" class="link-app"><?= $LNG->TXT('logout') ?></a>
             <?php else : ?>
                 <a href="<?= site_url('main/login') ?>" class="link-app"><?= $LNG->TXT('login') ?></a>
                 <span class="mx-2 opacity-50">|</span>
