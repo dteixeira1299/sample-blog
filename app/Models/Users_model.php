@@ -152,6 +152,7 @@ class Users_model extends Model
 
     }
 
+    // ========================================================================
     public function check_login($email, $password)
     {
         //check if login is ok
@@ -198,6 +199,23 @@ class Users_model extends Model
             'message' => 'SUCCESS',
             'data' => $tmp_user,
         ];
+
+    }
+
+    // ========================================================================
+    public function update_last_login($id_user)
+    {
+        // update the last login field in users table
+
+        $params = [
+            $id_user
+        ];
+
+        $db = db_connect();
+
+        $db->query("UPDATE users SET last_login = NOW(), updated_at = NOW() WHERE id_user = ?", $params);
+
+
 
     }
 

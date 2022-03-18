@@ -341,23 +341,46 @@ class Main extends BaseController
             return redirect()->back()->withInput()->with('login_error', $this->LNG->TXT('login_error_message'));
         }
 
-        session()->set('user', [
-            'id_user' => $results['data']->id_user,
-            'username' => $results['data']->username,
-            'email' => $results['data']->email,
-            'profile' => $results['data']->profile,
-        ]);
+        // creates the user session
+        $this->set_user_session($results['data']);
 
+        // redirect to the main page
         return redirect()->to('main');
         
     }
+
+    // ============================================================================
+    private function set_user_session($user_data)
+    {
+        //creates the user session
+        session()->set('user', [
+            'id_user' => $user_data->id_user,
+            'username' => $user_data->username,
+            'email' => $user_data->email,
+            'profile' => $user_data->profile,
+            'user_code' => $user_data->user_code,
+        ]);
+
+        // updates the last_login in the users table
+        $users_model = new Users_model();
+        $users_model->update_last_login($user_data->id_user);
+
+    }
+    
 
     // ============================================================================
     // LOGOUT
     // ============================================================================
     public function logout()
     {
+        // check if there is a session
+        if(!check_session()){
+            return redirect()->to('main');
+        }
+
+        // deletes the user from the session
         session()->remove('user');
+
         return redirect()->to('main');
     }
 
