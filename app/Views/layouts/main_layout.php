@@ -11,9 +11,8 @@
     <link rel="stylesheet" href="<?= base_url('assets/css/app.css') ?>">
     <!-- fontawesome -->
     <link rel="stylesheet" href="<?= base_url('assets/fontawesome/all.css') ?>">
-    <!-- trix -->
-    <link rel="stylesheet" href="<?= base_url('assets/css/trix.css') ?>">
-    <script src="<?= base_url('assets/js/trix.js') ?>"></script>
+    <!-- tinyMCE -->
+    <script src="https://cdn.tiny.cloud/1/<?= TINY_API_KEY ?>/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
 </head>
 
 <body>

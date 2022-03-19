@@ -16,3 +16,6 @@ define('MYSQL_AES_KEY',                 'BByGRd8qurxzMbN47rZF2C5UqX55vswk');
 define('AES_KEY',                        'apn9PA96EAXCxuq2eHso2bgKtq8P2Dok');
 define('AES_IV',                         '7xJcK7gBOVmIwojL');
 
+// Tiny API Key
+define('TINY_API_KEY',                   'hcqnt1hd2vwcujf89iitcannswzxi0njipsri2i2z7tc2f99');
+

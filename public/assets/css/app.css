@@ -44,6 +44,20 @@
     margin-bottom: 10px;
 }
 
+.title-new-post-frm {
+    font-size: 24px;
+    color: #dddddd;
+    padding-bottom: 10px;
+    border: none;
+    margin-bottom: 10px;
+    background-color: transparent;
+    width: 100%;
+}
+
+.line-new-post-frm {
+    border-bottom: 1px solid #000;
+}
+
 /* ------------------------------------ */
 /* main bar */
 .main-bar {
