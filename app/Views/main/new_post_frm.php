@@ -10,11 +10,11 @@
 
         <div class="row">
             <div class="col-sm-6 col-12">
-                <input type="text" class="title-new-post-frm" placeholder="Clique para editar o título do post">
+                <input type="text" class="title-new-post-frm" name="text_post_title" id="text_post_title" placeholder="Clique para editar o título do post">
             </div>
             <div class="col-sm-6 col-12 text-end">
                 <a href="<?= base_url('main') ?>" class="btn btn-danger btn-150"><?= $LNG->TXT('cancel') ?></a>
-                <input type="submit" name="text_post_title" id="text_post_title" value="Publicar" class="btn btn-primary btn-150">
+                <input type="submit" value="Publicar" class="btn btn-primary btn-150">
             </div>
         </div>
 
