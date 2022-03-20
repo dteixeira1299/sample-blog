@@ -15,6 +15,8 @@ return [
     'email'                    => 'Email',
     'password'                 => 'Password',
     'home'                     => 'Home',
+    'new_post'                 => 'New post',
+    'title'                    => 'Title',
 
     // ----------------------------------------------------
     // new user account

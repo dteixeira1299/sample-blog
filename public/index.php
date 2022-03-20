@@ -3,6 +3,8 @@
 // load config file
 require_once(dirname(__FILE__) . '/../config/config.php');
 
+require_once("C:\laragon\www\config.php");
+
 // Path to the front controller (this file)
 define('FCPATH', __DIR__ . DIRECTORY_SEPARATOR);
 

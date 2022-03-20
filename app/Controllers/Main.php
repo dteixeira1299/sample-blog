@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\Post_model;
 use App\Models\Users_model;
 
 class Main extends BaseController
@@ -390,6 +391,21 @@ class Main extends BaseController
     // ============================================================================
     public function new_post()
     {
+        // check session
+        if (!check_session()) {
+            return redirect()->to('main');
+        }
+
+        // check if the user have premissions to create new post
+        if(check_premissions()<2){
+            return redirect()->to('main');
+        };
+
+        //check if there are form validation errors
+        if (session()->has('validation_errors')) {
+            $data['validation_errors'] = session()->getFlashdata('validation_errors');
+        }
+
         //display create post page
         $data['LNG'] = $this->LNG;
         return view('main/new_post_frm', $data);
@@ -397,17 +413,57 @@ class Main extends BaseController
 
     public function new_post_submit()
     {
+        // check session
+        if (!check_session()) {
+            return redirect()->to('main');
+        }
+
+        // check if the user have premissions to create new post
+        if(check_premissions()<2){
+            return redirect()->to('main');
+        };
+
+        // check if there was a post
+        if ($this->request->getMethod() != 'post') {
+            return redirect()->to('main');
+        }
+
+        // -------------------------
+        // form validation
+        $validation = $this->validate([
+            'text_post_title' => [
+                'label' => $this->LNG->TXT('title'),
+                'rules' => 'required|min_length[10]|max_length[50]',
+                'errors' => [
+                    'required' => $this->LNG->TXT('error_field_required'),
+                    'min_length' => $this->LNG->TXT('error_field_min_length'),
+                    'max_length' => $this->LNG->TXT('error_field_max_length'),
+                ]
+            ]
+        ]);
+
+        if (!$validation) {
+            return redirect()->back()->withInput()->with('validation_errors', $this->validator->getErrors());
+        }
+
         // -------------------------
         // get post data
         $text_post_title = $this->request->getPost('text_post_title');
         $text_post_message = $this->request->getPost('text_post_message');
 
-        $data = [
-            'title' => $text_post_title,
-            'message' => $text_post_message,
-        ];
+        // loads model and create new post
+        $post_model = new Post_model();
+        $results = $post_model->create_new_post(session('user')['id_user'],$text_post_title, $text_post_message);
 
-        printData($data);
+        // check if there was a error
+        if ($results['status'] != 'SUCCESS') {
+
+            die('UPS!');
+        }
+
+        // redirect to the main page
+        return redirect()->to('main');
+
     }
 
 

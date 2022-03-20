@@ -8,20 +8,27 @@ function check_session()
 }
 
 // ============================================================================
+function check_premissions()
+{
+    // check user premissions
+    return session('user')['profile'];
+}
+
+// ============================================================================
 function aes_encrypt($value)
 {
-    return bin2hex(openssl_encrypt($value,'aes-256-cbc',AES_KEY,OPENSSL_RAW_DATA,AES_IV));
+    return bin2hex(openssl_encrypt($value, 'aes-256-cbc', AES_KEY, OPENSSL_RAW_DATA, AES_IV));
 }
 
 // ============================================================================
 function aes_decrypt($value)
 {
     // check if total number of chars is even
-    if(strlen($value) % 2 != 0) {
+    if (strlen($value) % 2 != 0) {
         return -1;
     }
 
-    return openssl_decrypt(hex2bin($value),'aes-256-cbc',AES_KEY,OPENSSL_RAW_DATA,AES_IV);
+    return openssl_decrypt(hex2bin($value), 'aes-256-cbc', AES_KEY, OPENSSL_RAW_DATA, AES_IV);
 }
 
 // ============================================================================
@@ -39,16 +46,13 @@ function printData($data, $die = true)
 
     echo '<pre>';
 
-    if(is_object($data) || is_array($data))
-    {
+    if (is_object($data) || is_array($data)) {
         print_r($data);
     } else {
         echo $data;
     }
 
-    if($die)
-    {
+    if ($die) {
         die(PHP_EOL . 'TERMINADO' . PHP_EOL);
     }
-
 }
