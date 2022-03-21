@@ -22,8 +22,8 @@ class Users_model extends Model
 
         $results = $db->query(
             "SELECT * " .
-            "FROM users " .
-            "WHERE AES_ENCRYPT(?, UNHEX(SHA2('" . MYSQL_AES_KEY . "', 512))) = email",
+                "FROM users " .
+                "WHERE AES_ENCRYPT(?, UNHEX(SHA2('" . MYSQL_AES_KEY . "', 512))) = email",
             $params
         )->getResultObject();
 
@@ -34,7 +34,7 @@ class Users_model extends Model
             $account = $results[0];
 
             // check if the account has an unconfirmed email
-            if(empty($account->email_verified)) {
+            if (empty($account->email_verified)) {
                 return [
                     'status' => 'ERROR',
                     'message' => 'Email is not verified.',
@@ -43,7 +43,7 @@ class Users_model extends Model
             }
 
             // check if the account is soft deleted
-            if(!empty($account->deleted_at)){
+            if (!empty($account->deleted_at)) {
                 return [
                     'status' => 'ERROR',
                     'message' => 'Account is deleted.',
@@ -70,14 +70,14 @@ class Users_model extends Model
 
         $db->query(
             "INSERT INTO users(username, email, psw, user_code, receive_newsletter, created_at, updated_at) VALUES(" .
-            "AES_ENCRYPT(?, UNHEX(SHA2('" . MYSQL_AES_KEY . "', 512))), " .
-            "AES_ENCRYPT(?, UNHEX(SHA2('" . MYSQL_AES_KEY . "', 512))), " .
-            "?, " .
-            "?, " .
-            "NOW(), " .
-            "NOW(), " .
-            "NOW()" .
-            ")",
+                "AES_ENCRYPT(?, UNHEX(SHA2('" . MYSQL_AES_KEY . "', 512))), " .
+                "AES_ENCRYPT(?, UNHEX(SHA2('" . MYSQL_AES_KEY . "', 512))), " .
+                "?, " .
+                "?, " .
+                "NOW(), " .
+                "NOW(), " .
+                "NOW()" .
+                ")",
             $params
         );
 
@@ -99,7 +99,7 @@ class Users_model extends Model
         //first check if there is a username with the specified user_code
         $db = db_connect();
         $results = $db->query("SELECT id_user FROM users WHERE user_code = ?", $params)->getResultObject();
-        if(count($results)!=1){
+        if (count($results) != 1) {
             return [
                 'status' => 'ERROR',
                 'message' => 'User code does not exists.',
@@ -113,7 +113,6 @@ class Users_model extends Model
             'status' => 'SUCCESS',
             'message' => 'Email with user_code: ' . $user_code . ' was verified with success.',
         ];
-
     }
 
     // ========================================================================
@@ -127,17 +126,18 @@ class Users_model extends Model
         $db = db_connect();
         $results = $db->query(
             "SELECT " .
-            "AES_DECRYPT(email, UNHEX(SHA2('" . MYSQL_AES_KEY . "', 512))) email, " .
-            "user_code " .
-            "FROM users " .
-            "WHERE 1 " .
-            "AND id_user = ? " .
-            "AND email_verified IS NULL " .
-            "AND deleted_at IS NULL"
-            ,$params)->getResultObject();
+                "AES_DECRYPT(email, UNHEX(SHA2('" . MYSQL_AES_KEY . "', 512))) email, " .
+                "user_code " .
+                "FROM users " .
+                "WHERE 1 " .
+                "AND id_user = ? " .
+                "AND email_verified IS NULL " .
+                "AND deleted_at IS NULL",
+            $params
+        )->getResultObject();
 
         //check if there are results
-        if(count($results) != 1){
+        if (count($results) != 1) {
             return [
                 'status' => 'ERROR',
                 'message' => 'User account not found.',
@@ -149,7 +149,6 @@ class Users_model extends Model
                 'data' => $results[0],
             ];
         }
-
     }
 
     // ========================================================================
@@ -164,29 +163,30 @@ class Users_model extends Model
 
         $results = $db->query(
             "SELECT " .
-            "id_user, " .
-            "AES_DECRYPT(username, UNHEX(SHA2('" . MYSQL_AES_KEY . "', 512))) username, " . 
-            "AES_DECRYPT(email, UNHEX(SHA2('" . MYSQL_AES_KEY . "', 512))) email, " . 
-            "psw, " . 
-            "profile, " . 
-            "user_code " . 
-            "FROM users " . 
-            "WHERE AES_ENCRYPT(?, UNHEX(SHA2('" . MYSQL_AES_KEY . "', 512))) = email " .
-            "AND deleted_at IS NULL " . 
-            "AND email_verified IS NOT NULL"
-        , $params)->getResultObject();
+                "id_user, " .
+                "AES_DECRYPT(username, UNHEX(SHA2('" . MYSQL_AES_KEY . "', 512))) username, " .
+                "AES_DECRYPT(email, UNHEX(SHA2('" . MYSQL_AES_KEY . "', 512))) email, " .
+                "psw, " .
+                "profile, " .
+                "user_code " .
+                "FROM users " .
+                "WHERE AES_ENCRYPT(?, UNHEX(SHA2('" . MYSQL_AES_KEY . "', 512))) = email " .
+                "AND deleted_at IS NULL " .
+                "AND email_verified IS NOT NULL",
+            $params
+        )->getResultObject();
 
         //check if there are results
-        if(count($results) != 1){
+        if (count($results) != 1) {
             return [
                 'status' => 'ERROR',
                 'message' => 'Invalid login. User does not exists.',
             ];
-        } 
+        }
 
         //check if the password is ok
         $tmp_user = $results[0];
-        if(!password_verify($password, $tmp_user->psw)){
+        if (!password_verify($password, $tmp_user->psw)) {
             return [
                 'status' => 'ERROR',
                 'message' => 'Invalid login. Wrong password.',
@@ -199,7 +199,6 @@ class Users_model extends Model
             'message' => 'SUCCESS',
             'data' => $tmp_user,
         ];
-
     }
 
     // ========================================================================
@@ -214,9 +213,6 @@ class Users_model extends Model
         $db = db_connect();
 
         $db->query("UPDATE users SET last_login = NOW(), updated_at = NOW() WHERE id_user = ?", $params);
-
-
-
     }
 
     // ========================================================================
@@ -226,14 +222,46 @@ class Users_model extends Model
 
         $results = $db->query(
             "SELECT " .
-            "AES_DECRYPT(username, UNHEX(SHA2('" . MYSQL_AES_KEY . "',512))) username," .
-            "AES_DECRYPT(email, UNHEX(SHA2('" . MYSQL_AES_KEY . "',512))) email," .
-            "user_code " .
-            "FROM users"
+                "AES_DECRYPT(username, UNHEX(SHA2('" . MYSQL_AES_KEY . "',512))) username," .
+                "AES_DECRYPT(email, UNHEX(SHA2('" . MYSQL_AES_KEY . "',512))) email," .
+                "user_code " .
+                "FROM users"
         )->getResultObject();
 
         return $results;
     }
 
+    // ========================================================================
+    public function get_user($id_user)
+    {
+        $db = db_connect();
 
+        $params = [
+            $id_user
+        ];
+
+        $results = $db->query(
+            "SELECT " .
+                "AES_DECRYPT(username, UNHEX(SHA2('" . MYSQL_AES_KEY . "',512))) username " .
+                "FROM users " .
+                "WHERE id_user = ?",
+            $params
+        )->getResultObject();
+
+        //check if there are results
+        if(count($results) != 1){
+            return [
+                'status' => 'ERROR',
+                'message' => 'User not found.',
+            ];
+        } else {
+            return [
+                'status' => 'SUCCESS',
+                'message' => 'SUCCESS',
+                'data' => $results[0],
+            ];
+        }
+
+        return $results;
+    }
 }

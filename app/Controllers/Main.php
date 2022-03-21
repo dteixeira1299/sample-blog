@@ -11,7 +11,13 @@ class Main extends BaseController
     // ============================================================================
     public function index()
     {
-        $data['LNG'] = $this->LNG;
+        $post_model = new Post_model();
+        $results = $post_model->get_all_post();
+
+        $data = [
+            'LNG' => $this->LNG,
+            'posts' => $results,
+        ];
 
         return view('main/home', $data);
     }
@@ -347,7 +353,6 @@ class Main extends BaseController
 
         // redirect to the main page
         return redirect()->to('main');
-        
     }
 
     // ============================================================================
@@ -365,9 +370,8 @@ class Main extends BaseController
         // updates the last_login in the users table
         $users_model = new Users_model();
         $users_model->update_last_login($user_data->id_user);
-
     }
-    
+
 
     // ============================================================================
     // LOGOUT
@@ -375,7 +379,7 @@ class Main extends BaseController
     public function logout()
     {
         // check if there is a session
-        if(!check_session()){
+        if (!check_session()) {
             return redirect()->to('main');
         }
 
@@ -397,7 +401,7 @@ class Main extends BaseController
         }
 
         // check if the user have premissions to create new post
-        if(check_premissions()<2){
+        if (check_premissions() < 2) {
             return redirect()->to('main');
         };
 
@@ -419,7 +423,7 @@ class Main extends BaseController
         }
 
         // check if the user have premissions to create new post
-        if(check_premissions()<2){
+        if (check_premissions() < 2) {
             return redirect()->to('main');
         };
 
@@ -453,16 +457,56 @@ class Main extends BaseController
 
         // loads model and create new post
         $post_model = new Post_model();
-        $results = $post_model->create_new_post(session('user')['id_user'],$text_post_title, $text_post_message);
+        $results = $post_model->create_new_post(session('user')['id_user'], $text_post_title, $text_post_message);
 
         // check if there was a error
         if ($results['status'] != 'SUCCESS') {
 
-            die('UPS!');
+            return redirect()->to('main');
         }
 
-        // redirect to the main page
-        return redirect()->to('main');
+        // redirect to the post page
+        return redirect()->to('main/post/' . $results['post_code']);
+    }
+
+    public function post($post_code = '')
+    {
+
+        // check if the post_code is not empty
+        if (empty($post_code)) {
+            return redirect()->to('main');
+        }
+
+        // loads model and show the post
+        $post_model = new Post_model();
+        $results = $post_model->get_post($post_code);
+
+        // check if there was a error
+        if ($results['status'] == 'ERROR') {
+            return redirect()->to('main');
+        }
+
+        // get author
+        $users_model = new Users_model();
+        $author = $users_model->get_user($results['data']->id_user);
+
+        // check if there was a error
+        if ($author['status'] == 'ERROR') {
+            return redirect()->to('main');
+        }
+
+        //display post page
+        $data = [
+            'LNG' => $this->LNG,
+            'id_post' => $results['data']->id_post,
+            'id_user' => $author['data']->username,
+            'title' => $results['data']->title,
+            'content' => $results['data']->content,
+            'created_at' => $results['data']->created_at,
+            'updated_at' => $results['data']->updated_at,
+        ];
+
+        return view('main/post', $data);
 
     }
 
@@ -506,7 +550,7 @@ class Main extends BaseController
 
 
 
-    
+
 
     // ============================================================================
     public function session()

@@ -17,6 +17,9 @@ return [
     'home'                     => 'Início',
     'new_post'                 => 'Nova publicação',
     'title'                    => 'Título',
+    'by'                       => 'Por',
+    'date'                     => 'Data',
+    'no_available_content'     => 'Sem conteúdo disponível.',
 
     // ----------------------------------------------------
     // new user account
@@ -54,6 +57,7 @@ return [
     'error_field_max_length'               => 'O campo {field} deve ter, no máximo, {param} caracteres.',
     'error_password_regex'                 => 'O campo {field} deve ter, no mínimo, uma maiúscula, uma minúscula, um número e um símbolo.',
     'error_repeat_password_not_matching'   => 'As passwords têm que ser iguais.',
+
     
 
 ];

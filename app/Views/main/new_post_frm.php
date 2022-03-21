@@ -19,7 +19,7 @@
 
     <div class="row">
         <div class="col-sm-6 col-12">
-            <input type="text" class="title-new-post-frm my-1 ms-2" name="text_post_title" id="text_post_title" placeholder="<?= $LNG->TXT('title') ?>" value="<?= old('text_post_title') ?>">
+            <input type="text" class="title-new-post-frm my-1 ms-2" name="text_post_title" id="text_post_title" placeholder="<?= $LNG->TXT('title') ?>" value="<?= old('text_post_title') ?>" required minlength="10" maxlength="50">
         </div>
         <div class="col-sm-6 col-12 text-end">
             <a href="<?= base_url('main') ?>" class="btn btn-danger btn-150"><?= $LNG->TXT('cancel') ?></a>
@@ -48,6 +48,7 @@
         toolbar_mode: 'floating',
         tinycomments_mode: 'embedded',
         tinycomments_author: 'Author name',
+        language: <?= json_encode($LNG->selected_language); ?>,
     });
 </script>
 <?= $this->endSection() ?>

@@ -17,6 +17,9 @@ return [
     'home'                     => 'Home',
     'new_post'                 => 'New post',
     'title'                    => 'Title',
+    'by'                       => 'By',
+    'date'                     => 'Date',
+    'no_available_content'     => 'No content available.',
 
     // ----------------------------------------------------
     // new user account

@@ -5,9 +5,9 @@ namespace App\Libraries;
 class Language
 {
 
-    protected $selected_language = null;
+    public $selected_language = null;
     protected $translations = null;
-    protected $available_languages = ['pt', 'en'];
+    protected $available_languages = ['pt_PT', 'en_US'];
 
 
     // ========================================================================
@@ -18,12 +18,12 @@ class Language
         if (isset($_COOKIE['blog_lang'])) {
             $language = $_COOKIE['blog_lang'];
         } else {
-            $language = 'pt';
+            $language = 'pt_PT';
         }
 
         //check if the language is available
         if (!in_array($language, $this->available_languages)) {
-            $language = 'pt';
+            $language = 'pt_PT';
         }
 
         $this->selected_language = $language;
@@ -57,4 +57,5 @@ class Language
             }
         }
     }
+    
 }

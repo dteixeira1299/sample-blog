@@ -29,8 +29,8 @@
 
             <?php endif; ?>
 
-            <a href="<?= site_url('main/change_language/pt') ?>"><img src="<?= base_url('assets/images/icons/icon_lang_pt.png') ?>" alt="Português" class="m-1" width="30"></a>
-            <a href="<?= site_url('main/change_language/en') ?>"><img src="<?= base_url('assets/images/icons/icon_lang_en.png') ?>" alt="English" class="m-1" width="30"></a>
+            <a href="<?= site_url('main/change_language/pt_PT') ?>"><img src="<?= base_url('assets/images/icons/icon_lang_pt.png') ?>" alt="Português" class="m-1" width="30"></a>
+            <a href="<?= site_url('main/change_language/en_US') ?>"><img src="<?= base_url('assets/images/icons/icon_lang_en.png') ?>" alt="English" class="m-1" width="30"></a>
 
         </div>
 
