@@ -20,6 +20,8 @@ return [
     'by'                       => 'By',
     'date'                     => 'Date',
     'no_available_content'     => 'No content available.',
+    'updated'                  => 'Updated',
+    'publish'                  => 'Publish',
 
     // ----------------------------------------------------
     // new user account

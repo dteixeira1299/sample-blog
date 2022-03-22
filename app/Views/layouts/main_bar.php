@@ -14,10 +14,8 @@
             <span class="mx-2 opacity-50">|</span>
 
             <?php if (session()->has('user')) : ?>
-                <?php if (session('user')['profile'] > 1) : ?>
-                    <a href="<?= site_url('main/new_post') ?>" class="link-app"><?= $LNG->TXT('new_post') ?></a>
-                    <span class="mx-2 opacity-50">|</span>
-                <?php endif; ?>
+                <a href="<?= site_url('main/new_post') ?>" class="link-app"><?= $LNG->TXT('new_post') ?></a>
+                <span class="mx-2 opacity-50">|</span>
                 <i class="far fa-user me-2"></i>
                 <a href="#" class="link-app"><?= session('user')['username'] ?></a>
                 <span class="mx-2 opacity-50">|</span>

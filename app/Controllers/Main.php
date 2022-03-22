@@ -400,11 +400,6 @@ class Main extends BaseController
             return redirect()->to('main');
         }
 
-        // check if the user have premissions to create new post
-        if (check_premissions() < 2) {
-            return redirect()->to('main');
-        };
-
         //check if there are form validation errors
         if (session()->has('validation_errors')) {
             $data['validation_errors'] = session()->getFlashdata('validation_errors');
@@ -421,11 +416,6 @@ class Main extends BaseController
         if (!check_session()) {
             return redirect()->to('main');
         }
-
-        // check if the user have premissions to create new post
-        if (check_premissions() < 2) {
-            return redirect()->to('main');
-        };
 
         // check if there was a post
         if ($this->request->getMethod() != 'post') {
@@ -466,10 +456,10 @@ class Main extends BaseController
         }
 
         // redirect to the post page
-        return redirect()->to('main/post/' . $results['post_code']);
+        return redirect()->to('main/posts/' . $results['post_code']);
     }
 
-    public function post($post_code = '')
+    public function posts($post_code = '')
     {
 
         // check if the post_code is not empty
@@ -511,50 +501,4 @@ class Main extends BaseController
     }
 
 
-
-
-
-
-
-
-
-
-
-
-    // ============================================================================
-    public function user_testes()
-    {
-        $users_model = new Users_model();
-        $users = $users_model->get_all_users();
-
-        printData($users);
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // ============================================================================
-    public function session()
-    {
-        printData(session('user'));
-    }
 }

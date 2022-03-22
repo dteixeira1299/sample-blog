@@ -2,7 +2,7 @@
 
 <?= $this->section('content') ?>
 
-<div class="mt-5">
+<div class="mt-5 container new-post-wrapper">
 
     <!-- validation errors -->
     <?php if (!empty($validation_errors)) : ?>
@@ -23,7 +23,7 @@
         </div>
         <div class="col-sm-6 col-12 text-end">
             <a href="<?= base_url('main') ?>" class="btn btn-danger btn-150"><?= $LNG->TXT('cancel') ?></a>
-            <input type="submit" value="Publicar" class="btn btn-primary btn-150">
+            <input type="submit" value="<?= $LNG->TXT('publish') ?>" class="btn btn-primary btn-150">
         </div>
     </div>
 
@@ -49,6 +49,9 @@
         tinycomments_mode: 'embedded',
         tinycomments_author: 'Author name',
         language: <?= json_encode($LNG->selected_language); ?>,
+        skin: "fabric-dark",
+        skin: "oxide-dark",
+        content_css: "dark",
     });
 </script>
 <?= $this->endSection() ?>

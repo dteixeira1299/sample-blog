@@ -82,9 +82,10 @@ class Post_model extends Model
         $db = db_connect();
 
         $results = $db->query(
-            "SELECT * FROM posts"
+            "SELECT * FROM posts ORDER BY updated_at DESC"
         )->getResultObject();
 
         return $results;
+
     }
 }

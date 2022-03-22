@@ -20,6 +20,8 @@ return [
     'by'                       => 'Por',
     'date'                     => 'Data',
     'no_available_content'     => 'Sem conteúdo disponível.',
+    'updated'                  => 'Atualizado',
+    'publish'                  => 'Publicar',
 
     // ----------------------------------------------------
     // new user account
