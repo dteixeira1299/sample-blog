@@ -25,6 +25,7 @@ CREATE TABLE IF NOT EXISTS `posts` (
   `id_user` int(10) unsigned DEFAULT '0',
   `title` varchar(50) DEFAULT NULL,
   `content` text,
+  `post_code` varchar(100) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   `deleted_at` datetime DEFAULT NULL,
