@@ -39,7 +39,7 @@
                 <div class="row">
                     <div class="col-sm-6 col-12">
                         <a href="<?= base_url('main/login') ?>" class="link-app"><?= $LNG->TXT('new_user_already_have_account') ?></a><br>
-                        <a href="#" class="link-app"><?= $LNG->TXT('new_user_recover_password') ?></a>
+                        <a href="<?= base_url('main/recovery_password') ?>" class="link-app"><?= $LNG->TXT('new_user_recover_password') ?></a>
                     </div>
                     <div class="col-sm-6 col-12 text-end">
                         <input type="submit" value="<?= $LNG->TXT('new_user_create_account') ?>" class="btn btn-primary btn-150">

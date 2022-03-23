@@ -264,4 +264,68 @@ class Users_model extends Model
 
         return $results;
     }
+
+    // ========================================================================
+    public function check_valid_account_for_password_recovery($user_email)
+    {
+
+        // check if the user_email is associated with a valid account
+        // if ok, returns the user_code
+
+        $params = [
+            $user_email
+        ];
+
+        $db = db_connect();
+
+        $results = $db->query(
+            "SELECT " .
+                "id_user, " .
+                "AES_DECRYPT(username, UNHEX(SHA2('" . MYSQL_AES_KEY . "', 512))) username, " .
+                "AES_DECRYPT(email, UNHEX(SHA2('" . MYSQL_AES_KEY . "', 512))) email, " .
+                "user_code, " .
+                "email_verified, " .
+                "deleted_at " .
+                "FROM users " .
+                "WHERE AES_ENCRYPT(?, UNHEX(SHA2('" . MYSQL_AES_KEY . "', 512))) = email ",
+            $params
+        )->getResultObject();
+
+        //check if there is an account with this email
+        if(count($results) == 0){
+            return [
+                'status' => 'ERROR',
+                'message' => 'User not found.',
+            ];
+        } 
+
+        // sets the row
+        $user = $results[0];
+
+        //check if account has email verified
+        if(empty($user->email_verified)){
+            return [
+                'status' => 'ERROR',
+                'message' => 'User account with email not verified.',
+            ];
+        }
+
+        //check if the user account is deleted
+        if(!empty($user->deleted_at)){
+            return [
+                'status' => 'ERROR',
+                'message' => 'User account was deleted in ' . $user->deleted_at . '.',
+            ];
+        }
+
+
+        // user account is ok. return user_code
+            return [
+                'status' => 'SUCCESS',
+                'message' => 'SUCCESS',
+                'data' => $user,
+            ];
+
+
+    }
 }

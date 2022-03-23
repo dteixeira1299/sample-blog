@@ -39,6 +39,13 @@ return [
     // ----------------------------------------------------
     'login_title' => 'Iniciar sessão',
 
+    // ----------------------------------------------------
+    // recovey password
+    // ----------------------------------------------------
+    'recovery_password_title'    => 'Recuperar a password',
+    'recovery_password_info'     => 'Indique o endereço de email associado à sua conta de utilizador.',
+    'recovery_password_recovery' => 'Enviar email',
+
     // new account errors
     'new_account_error_1'               => 'O email não está ainda verificado.',
     'new_account_error_2'               => 'A conta existe, mas não está ativa.',

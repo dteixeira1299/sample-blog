@@ -52,10 +52,12 @@ CREATE TABLE IF NOT EXISTS `users` (
   `updated_at` datetime DEFAULT NULL,
   `deleted_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id_user`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table sample_blog.users: ~0 rows (approximately)
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` (`id_user`, `username`, `email`, `psw`, `profile`, `user_code`, `last_login`, `email_verified`, `receive_newsletter`, `created_at`, `updated_at`, `deleted_at`) VALUES
+	(1, _binary 0xf5d1f32f3ab923e0689df245e2e6132b, _binary 0xb83a16a6863522552e11e30bb3f1a10b3041bef404417d637f8859b5deefa18c, '$2y$10$fyXetiKMMB1qyTFsSdgrlu2/3joaAtFD5mkW0MdEzZtbrTGNnmYb.', 1, '22437f37ddcab661eb4dac35437f8eae', NULL, '2022-03-23 19:06:52', '2022-03-23 19:03:39', '2022-03-23 19:03:39', '2022-03-23 19:03:39', NULL);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

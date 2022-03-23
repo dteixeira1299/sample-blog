@@ -36,11 +36,9 @@ class Main extends BaseController
         // create the language cookie
         set_cookie('blog_lang', $lang, (86400 * 365));
 
-        // redirect to main
-        return redirect()->to('main')->withCookies();
+        // redirect to the same page
+        return redirect()->to(session()->_ci_previous_url)->withCookies();
     }
-
-
 
 
     // ============================================================================
@@ -234,6 +232,7 @@ class Main extends BaseController
         $this->new_user_account_final_message($data['email_address']);
     }
 
+
     // ============================================================================
     // EMAIL VERIFICATION
     // ============================================================================
@@ -389,6 +388,108 @@ class Main extends BaseController
         return redirect()->to('main');
     }
 
+    // ============================================================================
+    // RECOVERY PASSWORD
+    // ============================================================================
+    public function recovery_password()
+    {
+        // check session
+        if (check_session()) {
+            return redirect()->to('main');
+        }
+
+        //check if there are form validation errors
+        if (session()->has('validation_errors')) {
+            $data['validation_errors'] = session()->getFlashdata('validation_errors');
+        }
+
+        //display create post page
+        $data['LNG'] = $this->LNG;
+        return view('main/recovery_password_frm', $data);
+
+    }
+
+    // ============================================================================
+    public function recovery_password_submit()
+    {
+
+        // check session
+        if (check_session()) {
+            return redirect()->to('main');
+        }
+
+        // check if there was a post
+        if ($this->request->getMethod() != 'post') {
+            return redirect()->to('main');
+        }
+
+        // -------------------------
+        // form validation
+        $validation = $this->validate([
+            'text_email' => [
+                'label' => $this->LNG->TXT('email'),
+                'rules' => 'required|valid_email|min_length[10]|max_length[50]',
+                'errors' => [
+                    'required' => $this->LNG->TXT('error_field_required'),
+                    'valid_email' => $this->LNG->TXT('error_valid_email'),
+                    'min_length' => $this->LNG->TXT('error_field_min_length'),
+                    'max_length' => $this->LNG->TXT('error_field_max_length'),
+                ]
+            ],
+        ]);
+
+        if (!$validation) {
+            return redirect()->back()->withInput()->with('validation_errors', $this->validator->getErrors());
+        }
+
+        // -------------------------
+        // get post data
+        $email = trim(strtolower($this->request->getPost('text_email')));
+
+        // check if email is associated with a valid account
+        $users_model = new Users_model();
+        $results = $users_model->check_valid_account_for_password_recovery($email);
+
+
+        // check results
+        if($results['status'] == 'ERROR') {
+            // log
+        } else {
+            // send email for password recovery
+            // $this->send_email_to_recovery_password($results['data']);
+        }
+
+        //display final message
+        $data['LNG'] = $this->LNG;
+        $data['user_data'] = $results['data'];
+        return view('main/recovery_password_final_message', $data);
+        
+    }
+
+    // ============================================================================
+    private function send_email_to_recovery_password($data)
+    {
+        //TMP TMP TMP TMP TMP TMP TMP TMP TMP TMP TMP TMP
+        mail($data['email_address'], 'Confirmar o email.', 'Clique no link seguinte para verificar o seu email: ' . $data['url']);
+    }
+
+    // ============================================================================
+    public function redifine_password($user_code = '')
+    {
+
+        // check session
+        if (check_session()) {
+            return redirect()->to('main');
+        }
+
+        // check if the user_code is not empty
+        if (empty($user_code) || strlen($user_code) != 32) {
+            return redirect()->to('main');
+        }
+
+        die('ok');
+
+    }
 
     // ============================================================================
     // NEW POST
@@ -497,8 +598,11 @@ class Main extends BaseController
         ];
 
         return view('main/post', $data);
-
     }
 
 
+    public function session()
+    {
+        printData(session()->get());
+    }
 }

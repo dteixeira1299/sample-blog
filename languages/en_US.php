@@ -39,6 +39,13 @@ return [
     // ----------------------------------------------------
     'login_title' => 'Login',
 
+    // ----------------------------------------------------
+    // recovey password
+    // ----------------------------------------------------
+    'recovery_password_title'    => 'Recovery password',
+    'recovery_password_info'     => 'Please enter the email address associated with your user account.',
+    'recovery_password_recovery' => 'Send email',
+
     // new account errors
     'new_account_error_1'               => 'The e-mail is not yet verified.',
     'new_account_error_2'               => 'The account exists, but it is not active.',
