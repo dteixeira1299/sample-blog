@@ -37,7 +37,7 @@ class BaseController extends Controller
      *
      * @var array
      */
-    protected $helpers = ['general', 'form'];
+    protected $helpers = ['general', 'form', 'logger'];
 
     protected $LNG;
 
@@ -55,7 +55,5 @@ class BaseController extends Controller
 
         // language
         $this->LNG = new Language();
-
     }
-
 }

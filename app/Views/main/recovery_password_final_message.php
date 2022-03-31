@@ -6,8 +6,8 @@
     <div class="row my-5">
         <div class="col-sm-6 offset-sm-3 col-10 offset-1 new-user-wrapper text-center">
             <h2><i class="far fa-envelope"></i></h2>
-            <h4><?= $LNG->TXT('') ?></h4>
-            <p class="my-5"><?= $LNG->TXT('', [$user_data->email]) ?></p>
+            <h4><?= $LNG->TXT('recovery_password_title') ?></h4>
+            <p class="my-5"><?= $LNG->TXT('recovery_password_final_message_message', [$user_email]) ?></p>
             <div class="my-3">
                 <a href="<?= site_url('main') ?>" class="btn btn-primary btn-200"><?= $LNG->TXT('accept') ?></a>
             </div>

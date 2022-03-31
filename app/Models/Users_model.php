@@ -249,7 +249,7 @@ class Users_model extends Model
         )->getResultObject();
 
         //check if there are results
-        if(count($results) != 1){
+        if (count($results) != 1) {
             return [
                 'status' => 'ERROR',
                 'message' => 'User not found.',
@@ -292,18 +292,18 @@ class Users_model extends Model
         )->getResultObject();
 
         //check if there is an account with this email
-        if(count($results) == 0){
+        if (count($results) == 0) {
             return [
                 'status' => 'ERROR',
                 'message' => 'User not found.',
             ];
-        } 
+        }
 
         // sets the row
         $user = $results[0];
 
         //check if account has email verified
-        if(empty($user->email_verified)){
+        if (empty($user->email_verified)) {
             return [
                 'status' => 'ERROR',
                 'message' => 'User account with email not verified.',
@@ -311,7 +311,7 @@ class Users_model extends Model
         }
 
         //check if the user account is deleted
-        if(!empty($user->deleted_at)){
+        if (!empty($user->deleted_at)) {
             return [
                 'status' => 'ERROR',
                 'message' => 'User account was deleted in ' . $user->deleted_at . '.',
@@ -320,12 +320,79 @@ class Users_model extends Model
 
 
         // user account is ok. return user_code
+        return [
+            'status' => 'SUCCESS',
+            'message' => 'SUCCESS',
+            'data' => $user,
+        ];
+    }
+
+    // ========================================================================
+    public function redefine_user_password($user_code, $new_password)
+    {
+        // check if the user_code exists
+        $params = [
+            $user_code
+        ];
+
+        $db = db_connect();
+        $results = $db->query(
+            "SELECT id_user, psw, email_verified, deleted_at FROM users " .
+                "WHERE user_code = ? ",
+            $params
+        )->getResultObject();
+
+        // check if the user account exists
+        if (count($results) != 1) {
             return [
-                'status' => 'SUCCESS',
-                'message' => 'SUCCESS',
-                'data' => $user,
+                'STATUS' => 'ERROR',
+                'MESSAGE' => 'User account does not exists.'
             ];
+        }
+
+        // check if the password is defined
+        if (empty($results[0]->psw)) {
+            return [
+                'STATUS' => 'ERROR',
+                'MESSAGE' => 'User password is not defined.'
+            ];
+        }
+
+        // check if the email is verified
+        if (empty($results[0]->email_verified)) {
+            return [
+                'STATUS' => 'ERROR',
+                'MESSAGE' => 'User email is not verified.'
+            ];
+        }
+
+        // check if the user account is deleted
+        if (!empty($results[0]->deleted_at)) {
+            return [
+                'STATUS' => 'ERROR',
+                'MESSAGE' => 'User account is not deleted since ' . $results[0]->deleted_at . '.',
+            ];
+        }
+
+        // update users password
+        $params = [
+            password_hash($new_password, PASSWORD_DEFAULT),
+            $user_code,
+        ];
+
+        $db->query(
+            "UPDATE users SET " .
+                "psw = ?, " .
+                "updated_at = NOW() " .
+                "WHERE user_code = ? ",
+            $params
+        );
 
 
+        // return success
+        return [
+            'STATUS' => 'SUCCESS',
+            'MESSAGE' => 'User password updated with success.',
+        ];
     }
 }

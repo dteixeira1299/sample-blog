@@ -19,3 +19,5 @@ define('AES_IV',                         '7xJcK7gBOVmIwojL');
 // Tiny API Key
 // define('TINY_API_KEY',                   '');
 
+// logger
+define('LOGGER_FILE',                   'sampleblog.log');

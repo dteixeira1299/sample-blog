@@ -19,6 +19,11 @@ class Main extends BaseController
             'posts' => $results,
         ];
 
+        //logger
+        logger('mensagem de informação');
+        logger('mensagem de erro', 'error');
+        logger('mensagem de aviso', 'warning');
+
         return view('main/home', $data);
     }
 
@@ -406,7 +411,6 @@ class Main extends BaseController
         //display create post page
         $data['LNG'] = $this->LNG;
         return view('main/recovery_password_frm', $data);
-
     }
 
     // ============================================================================
@@ -452,25 +456,28 @@ class Main extends BaseController
 
 
         // check results
-        if($results['status'] == 'ERROR') {
+        if ($results['status'] == 'ERROR') {
             // log
         } else {
             // send email for password recovery
-            // $this->send_email_to_recovery_password($results['data']);
+            $email_data = [
+                'email_address' => $results['data']->email,
+                'url' => site_url('main/redifine_password/' . $results['data']->user_code),
+            ];
+            $this->send_email_to_recovery_password($email_data);
         }
 
         //display final message
         $data['LNG'] = $this->LNG;
-        $data['user_data'] = $results['data'];
+        $data['user_email'] = $email;
         return view('main/recovery_password_final_message', $data);
-        
     }
 
     // ============================================================================
     private function send_email_to_recovery_password($data)
     {
         //TMP TMP TMP TMP TMP TMP TMP TMP TMP TMP TMP TMP
-        mail($data['email_address'], 'Confirmar o email.', 'Clique no link seguinte para verificar o seu email: ' . $data['url']);
+        mail($data['email_address'], 'Redefinir password.', 'Clique no link seguinte para redifinir a sua password: ' . $data['url']);
     }
 
     // ============================================================================
@@ -487,9 +494,91 @@ class Main extends BaseController
             return redirect()->to('main');
         }
 
-        die('ok');
+        //check if there are form validation errors
+        if (session()->has('validation_errors')) {
+            $data['validation_errors'] = session()->getFlashdata('validation_errors');
+        }
 
+
+        $data['LNG'] = $this->LNG;
+        $data['user_code'] = aes_encrypt($user_code);
+        return view('main/redifine_password_frm', $data);
     }
+
+    // ============================================================================
+    public function redifine_password_submit()
+    {
+        // check session
+        if (check_session()) {
+            return redirect()->to('main');
+        }
+
+        // check if there was a post
+        if ($this->request->getMethod() != 'post') {
+            return redirect()->to('main');
+        }
+
+        // check if the user code field is present
+        if (empty($this->request->getPost('user_code'))) {
+            return redirect()->to('main');
+        }
+
+        // -------------------------
+        // form validation
+        $validation = $this->validate([
+            'text_password' => [
+                'label' => $this->LNG->TXT('password'),
+                'rules' => 'required|min_length[6]|max_length[16]|regex_match[/(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*\W)/]',
+                'errors' => [
+                    'required' => $this->LNG->TXT('error_field_required'),
+                    'min_length' => $this->LNG->TXT('error_field_min_length'),
+                    'max_length' => $this->LNG->TXT('error_field_max_length'),
+                    'regex_match' => $this->LNG->TXT('error_password_regex'),
+                ]
+            ],
+            'text_repeat_password' => [
+                'label' => $this->LNG->TXT('new_user_repeat_password'),
+                'rules' => 'required|min_length[6]|max_length[16]|regex_match[/(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*\W)/]|matches[text_password]',
+                'errors' => [
+                    'required' => $this->LNG->TXT('error_field_required'),
+                    'min_length' => $this->LNG->TXT('error_field_min_length'),
+                    'max_length' => $this->LNG->TXT('error_field_max_length'),
+                    'regex_match' => $this->LNG->TXT('error_password_regex'),
+                    'matches' => $this->LNG->TXT('error_repeat_password_not_matching'),
+                ]
+            ],
+        ]);
+
+        if (!$validation) {
+            return redirect()->back()->withInput()->with('validation_errors', $this->validator->getErrors());
+        }
+
+        $user_code = aes_decrypt($this->request->getPost('user_code'));
+        $new_password = $this->request->getPost('text_password');
+
+        // check if the user_code is valid
+        if (empty($user_code) || strlen($user_code) != 32) {
+            return redirect()->to('main');
+        }
+
+        // try to update user's password
+        $users_model = new Users_model();
+        $results = $users_model->redefine_user_password($user_code, $new_password);
+
+        // check results for error
+        if ($results['STATUS'] == 'ERROR') {
+            // ...
+        } else {
+            // ...
+        }
+
+        //display final message
+        $data['LNG'] = $this->LNG;
+        return view('main/user_pass_redefined_success', $data);
+    }
+
+
+
 
     // ============================================================================
     // NEW POST

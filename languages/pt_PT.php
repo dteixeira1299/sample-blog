@@ -22,6 +22,8 @@ return [
     'no_available_content'     => 'Sem conteúdo disponível.',
     'updated'                  => 'Atualizado',
     'publish'                  => 'Publicar',
+    'update'                   => 'Atualizar',
+    'back'                     => 'Voltar',
 
     // ----------------------------------------------------
     // new user account
@@ -33,7 +35,7 @@ return [
     'new_user_already_have_account'     => 'Já tenho conta',
     'new_user_recover_password'         => 'Recuperar password',
     'new_user_disclaimer'               => 'A sua conta só estará disponível após confirmação do email.',
-    
+
     // ----------------------------------------------------
     // login
     // ----------------------------------------------------
@@ -45,13 +47,17 @@ return [
     'recovery_password_title'    => 'Recuperar a password',
     'recovery_password_info'     => 'Indique o endereço de email associado à sua conta de utilizador.',
     'recovery_password_recovery' => 'Enviar email',
+    'recovery_password_final_message_message' => 'Por favor, verifique a sua caixa de correio. Foi enviado para o endereço <strong style="color: white;">^</strong> um email para recuperação da sua password.',
+
+    'redifine_password_title' => 'Redefinir a password',
+    'redifine_password_info' => 'Password redefinida com sucesso.',
 
     // new account errors
     'new_account_error_1'               => 'O email não está ainda verificado.',
     'new_account_error_2'               => 'A conta existe, mas não está ativa.',
     'new_account_error_3'               => 'A conta já está registada e ativa.',
     'new_account_send_verification_email' => 'Reenviar novamente o email para verificação da sua conta.',
-    
+
     'new_account_final_message_title' => 'VALIDAÇÃO DE EMAIL',
     'new_account_final_message_message' => 'Por favor, verifique a sua caixa de correio. Foi enviado para o endereço <strong style="color: white;">^</strong> um email para validação da sua conta.',
     'new_account_email_verified' => 'A sua conta foi validada com sucesso.<br>Seja bem-vindo a esta plataforma.',
@@ -67,6 +73,6 @@ return [
     'error_password_regex'                 => 'O campo {field} deve ter, no mínimo, uma maiúscula, uma minúscula, um número e um símbolo.',
     'error_repeat_password_not_matching'   => 'As passwords têm que ser iguais.',
 
-    
+
 
 ];

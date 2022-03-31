@@ -22,6 +22,8 @@ return [
     'no_available_content'     => 'No content available.',
     'updated'                  => 'Updated',
     'publish'                  => 'Publish',
+    'update'                   => 'Update',
+    'back'                     => 'Back',
 
     // ----------------------------------------------------
     // new user account
@@ -33,7 +35,7 @@ return [
     'new_user_already_have_account'     => 'I already have an account',
     'new_user_recover_password'         => 'Recover password',
     'new_user_disclaimer'               => 'Your account will only be available after email confirmation.',
-    
+
     // ----------------------------------------------------
     // login
     // ----------------------------------------------------
@@ -45,6 +47,10 @@ return [
     'recovery_password_title'    => 'Recovery password',
     'recovery_password_info'     => 'Please enter the email address associated with your user account.',
     'recovery_password_recovery' => 'Send email',
+    'recovery_password_final_message_message' => 'Please check your mailbox. An email to recover your password has been sent to <strong style="color: white;">^</strong>.',
+
+    'redifine_password_title' => 'Reset password',
+    'redifine_password_info' => 'Password reset successfully.',
 
     // new account errors
     'new_account_error_1'               => 'The e-mail is not yet verified.',
