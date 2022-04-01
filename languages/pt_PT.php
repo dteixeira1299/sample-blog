@@ -24,6 +24,7 @@ return [
     'publish'                  => 'Publicar',
     'update'                   => 'Atualizar',
     'back'                     => 'Voltar',
+    'edit'                     => 'Editar',
 
     // ----------------------------------------------------
     // new user account

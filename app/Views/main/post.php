@@ -8,9 +8,11 @@
         <div class="col-sm-6 col-12 my-1">
             <h2><?= $title ?></h2>
         </div>
-        <div class="col-sm-6 col-12 text-end">
-            <a href="<?= base_url('main') ?>" class="btn btn-primary btn-150">[EDIT]</a>
-        </div>
+        <?php if (session()->has('user')) : ?>
+            <div class="col-sm-6 col-12 text-end">
+                <a href="<?= base_url('main/edit_post/' . $post_code) ?>" class="btn btn-primary btn-150"><?= $LNG->TXT('edit') ?></a>
+            </div>
+        <?php endif; ?>
 
         <div class="line-post mb-3"></div>
 

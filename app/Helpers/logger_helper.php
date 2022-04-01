@@ -8,7 +8,7 @@ function logger($message, $level = 'info')
     // create a log channel
     $log = new Logger('sampleblog');
     $log->setTimezone(new \DateTimeZone('UTC'));
-    $log->pushHandler(new StreamHandler(WRITEPATH . 'logs/' . LOGGER_FILE, Logger::WARNING));
+    $log->pushHandler(new StreamHandler(WRITEPATH . 'logs/' . LOGGER_FILE, Logger::DEBUG));
 
     $level = strtolower($level);
 

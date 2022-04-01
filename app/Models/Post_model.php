@@ -44,6 +44,30 @@ class Post_model extends Model
     }
 
     // ========================================================================
+    public function edit_post($id_user, $title, $content, $post_code)
+    {
+
+        // edit post
+
+        $db = db_connect();
+
+        $params = [
+            $id_user,
+            $title,
+            $content,
+            $post_code,
+        ];
+
+        $db->query("UPDATE posts SET id_user = ?, title = ?, content = ?, updated_at = NOW() WHERE post_code = ?", $params);
+
+        return [
+            'status' => 'SUCCESS',
+            'message' => 'SUCCESS',
+            'post_code' => $post_code,
+        ];
+    }
+
+    // ========================================================================
     public function get_post($post_code)
     {
         $db = db_connect();
@@ -86,6 +110,5 @@ class Post_model extends Model
         )->getResultObject();
 
         return $results;
-
     }
 }

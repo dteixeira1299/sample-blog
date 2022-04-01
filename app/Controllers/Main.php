@@ -19,11 +19,6 @@ class Main extends BaseController
             'posts' => $results,
         ];
 
-        //logger
-        logger('mensagem de informação');
-        logger('mensagem de erro', 'error');
-        logger('mensagem de aviso', 'warning');
-
         return view('main/home', $data);
     }
 
@@ -171,12 +166,16 @@ class Main extends BaseController
             }
         }
 
+        // logger
+        logger('New user account was created: ' . $email);
+
         //send the email to the new user to confirm the email address
         $data = [
             'email_address' => $email,
             'url' => site_url('main/verify_email/' . $results['user_code']),
         ];
         $this->send_email_to_verify_account($data);
+
 
         //display final page informing the new user that an email was sent
         $this->new_user_account_final_message($email);
@@ -196,7 +195,15 @@ class Main extends BaseController
     private function send_email_to_verify_account($data)
     {
         //TMP TMP TMP TMP TMP TMP TMP TMP TMP TMP TMP TMP
-        mail($data['email_address'], 'Confirmar o email.', 'Clique no link seguinte para verificar o seu email: ' . $data['url']);
+        $result = mail($data['email_address'], 'Confirmar o email.', 'Clique no link seguinte para verificar o seu email: ' . $data['url']);
+
+        if ($result) {
+            // logger
+            logger('Message to confirm email address was sent to ' . $data['email_address']);
+        } else {
+            // logger
+            logger('It was not possible to send message to confirm email address was sent to ' . $data['email_address'], 'error');
+        }
     }
 
     // ============================================================================
@@ -230,10 +237,13 @@ class Main extends BaseController
             'url' => site_url('main/verify_email/' . $results['data']->user_code),
         ];
 
-        //send email to virify account
+        //  send email to virify account
         $this->send_email_to_verify_account($data);
 
-        //display final page informing the new user that an email was sent
+        // logger
+        logger('Message for email confirmation was sent again to ' . $data['email_address']);
+
+        //  display final page informing the new user that an email was sent
         $this->new_user_account_final_message($data['email_address']);
     }
 
@@ -651,7 +661,6 @@ class Main extends BaseController
 
     public function posts($post_code = '')
     {
-
         // check if the post_code is not empty
         if (empty($post_code)) {
             return redirect()->to('main');
@@ -659,7 +668,7 @@ class Main extends BaseController
 
         // loads model and show the post
         $post_model = new Post_model();
-        $results = $post_model->get_post($post_code);
+        $results = $post_model->get_post(aes_decrypt($post_code));
 
         // check if there was a error
         if ($results['status'] == 'ERROR') {
@@ -684,10 +693,125 @@ class Main extends BaseController
             'content' => $results['data']->content,
             'created_at' => $results['data']->created_at,
             'updated_at' => $results['data']->updated_at,
+            'post_code' => aes_encrypt($results['data']->post_code),
         ];
 
         return view('main/post', $data);
     }
+
+    // ============================================================================
+    // EDIT POST
+    // ============================================================================
+
+    public function edit_post($post_code = '')
+    {
+        // check session
+        if (!check_session()) {
+            return redirect()->to('main');
+        }
+
+        // check if the post_code is not empty
+        if (empty($post_code)) {
+            return redirect()->to('main');
+        }
+
+        //check if there are form validation errors
+        if (session()->has('validation_errors')) {
+            $data['validation_errors'] = session()->getFlashdata('validation_errors');
+        }
+
+        // loads model and show the post
+        $post_model = new Post_model();
+        $results = $post_model->get_post(aes_decrypt($post_code));
+
+        // check if there was a error
+        if ($results['status'] == 'ERROR') {
+            return redirect()->to('main');
+        }
+
+        // get author
+        $users_model = new Users_model();
+        $author = $users_model->get_user($results['data']->id_user);
+
+        // check if there was a error
+        if ($author['status'] == 'ERROR') {
+            return redirect()->to('main');
+        }
+
+        //display post page
+        $data = [
+            'LNG' => $this->LNG,
+            'id_post' => $results['data']->id_post,
+            'id_user' => $author['data']->username,
+            'title' => $results['data']->title,
+            'content' => $results['data']->content,
+            'created_at' => $results['data']->created_at,
+            'updated_at' => $results['data']->updated_at,
+            'post_code' => aes_encrypt($results['data']->post_code),
+        ];
+
+        return view('main/edit_post_frm', $data);
+    }
+
+    public function edit_post_submit()
+    {
+        // check session
+        if (!check_session()) {
+            return redirect()->to('main');
+        }
+
+        // check if there was a post
+        if ($this->request->getMethod() != 'post') {
+            return redirect()->to('main');
+        }
+
+        // check if the post code field is present
+        if (empty($this->request->getPost('post_code'))) {
+            return redirect()->to('main');
+        }
+
+        // -------------------------
+        // form validation
+        $validation = $this->validate([
+            'text_post_title' => [
+                'label' => $this->LNG->TXT('title'),
+                'rules' => 'required|min_length[10]|max_length[50]',
+                'errors' => [
+                    'required' => $this->LNG->TXT('error_field_required'),
+                    'min_length' => $this->LNG->TXT('error_field_min_length'),
+                    'max_length' => $this->LNG->TXT('error_field_max_length'),
+                ]
+            ]
+        ]);
+
+        if (!$validation) {
+            return redirect()->back()->withInput()->with('validation_errors', $this->validator->getErrors());
+        }
+
+        // -------------------------
+        // get post data
+        $text_post_title = $this->request->getPost('text_post_title');
+        $text_post_message = $this->request->getPost('text_post_message');
+        $post_code = aes_decrypt($this->request->getPost('post_code'));
+
+        // loads model and update post
+        $post_model = new Post_model();
+        $results = $post_model->edit_post(session('user')['id_user'], $text_post_title, $text_post_message, $post_code);
+
+        // check if there was a error
+        if ($results['status'] != 'SUCCESS') {
+
+            return redirect()->to('main');
+        }
+
+
+        // redirect to the post page
+        return redirect()->to('main/posts/' . aes_encrypt($results['post_code']));
+    }
+
+
+
+
 
 
     public function session()

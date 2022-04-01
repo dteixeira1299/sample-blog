@@ -9,7 +9,11 @@
             <?php if ($posts) : ?>
                 <?php foreach ($posts as $post) { ?>
                     <div class="post-wrapper text-start">
-                        <a href="<?= base_url('main/posts/' . $post->post_code) ?>" class="link-app"><?= $post->title; ?></a>
+                        <a href="<?= base_url('main/posts/' . aes_encrypt($post->post_code)) ?>" class="link-app"><?= $post->title; ?></a>
+
+                        <?php if ($post->created_at != $post->updated_at) : ?>
+                            (<?= $LNG->TXT('updated') ?>)
+                        <?php endif; ?>
 
                     </div>
                     <br>

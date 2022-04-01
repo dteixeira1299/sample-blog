@@ -24,6 +24,7 @@ return [
     'publish'                  => 'Publish',
     'update'                   => 'Update',
     'back'                     => 'Back',
+    'edit'                     => 'Edit',
 
     // ----------------------------------------------------
     // new user account
