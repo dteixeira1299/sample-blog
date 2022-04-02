@@ -656,7 +656,7 @@ class Main extends BaseController
         }
 
         // redirect to the post page
-        return redirect()->to('main/posts/' . $results['post_code']);
+        return redirect()->to('main/posts/' . aes_encrypt($results['post_code']));
     }
 
     public function posts($post_code = '')

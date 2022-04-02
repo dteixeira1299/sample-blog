@@ -16,8 +16,8 @@ define('MYSQL_AES_KEY',                 'BByGRd8qurxzMbN47rZF2C5UqX55vswk');
 define('AES_KEY',                        'apn9PA96EAXCxuq2eHso2bgKtq8P2Dok');
 define('AES_IV',                         '7xJcK7gBOVmIwojL');
 
-// Tiny API Key
-// define('TINY_API_KEY',                   '');
+// Tiny API Key (https://www.tiny.cloud/auth/signup/)
+define('TINY_API_KEY',                   'your-api-key');
 
 // logger
 define('LOGGER_FILE',                   'sampleblog.log');

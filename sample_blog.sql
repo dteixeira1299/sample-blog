@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `posts` (
   PRIMARY KEY (`id_post`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table sample_blog.posts: ~0 rows (approximately)
+-- Dumping data for table sample_blog.posts: ~2 rows (approximately)
 /*!40000 ALTER TABLE `posts` DISABLE KEYS */;
 /*!40000 ALTER TABLE `posts` ENABLE KEYS */;
 
@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   PRIMARY KEY (`id_user`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table sample_blog.users: ~4 rows (approximately)
+-- Dumping data for table sample_blog.users: ~1 rows (approximately)
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 
